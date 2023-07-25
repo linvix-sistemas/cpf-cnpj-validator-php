@@ -1,5 +1,6 @@
 {
     "name": "linvix-sistemas/validador-cpf-cnpj-php",
+    "version": "1.0.0",
     "description": "Classe em PHP para validação de CPF e CNPJ.",
     "keywords": [
         "cnpj",
@@ -23,7 +24,7 @@
         }
     ],
     "require": {
-        "php": "^7.2"
+        "php": "^7.4|^8.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5"
@@ -45,6 +46,5 @@
         "test": [
             "vendor/bin/phpunit"
         ]
-    },
-    "version": "1.2.2"
+    }
 }
