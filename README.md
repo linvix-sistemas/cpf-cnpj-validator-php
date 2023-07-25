@@ -1,7 +1,7 @@
 # Validador de CPF e CNPJ 
 
-[![Build Status](https://travis-ci.org/linvix-sistemas/cpf-cnpj-validator-php.svg?branch=master)](https://travis-ci.org/linvix-sistemas/cpf-cnpj-validator-php)
-[![Latest Stable Version](https://poser.pugx.org/linvix-sistemas/cpf-cnpj-validator-php/v/stable)](https://packagist.org/packages/linvix-sistemas/cpf-cnpj-validator-php)
+[![Build Status](https://travis-ci.org/linvix-sistemas/cpf-cnpj-validator-php.svg?branch=main)](https://travis-ci.org/linvix-sistemas/cpf-cnpj-validator-php)
+[![Latest Stable Version](https://poser.pugx.org/linvix-sistemas/cpf-cnpj-validator-php/v)](https://packagist.org/packages/linvix-sistemas/cpf-cnpj-validator-php)
 [![Total Downloads](https://poser.pugx.org/linvix-sistemas/cpf-cnpj-validator-php/downloads)](https://packagist.org/packages/linvix-sistemas/cpf-cnpj-validator-php)
 [![License](https://poser.pugx.org/linvix-sistemas/cpf-cnpj-validator-php/license)](https://packagist.org/packages/linvix-sistemas/cpf-cnpj-validator-php)
 
