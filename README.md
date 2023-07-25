@@ -1,9 +1,9 @@
 # Validador de CPF e CNPJ 
 
-[![Build Status](https://travis-ci.org/bissolli/validador-cpf-cnpj.svg?branch=master)](https://travis-ci.org/bissolli/validador-cpf-cnpj)
-[![Latest Stable Version](https://poser.pugx.org/bissolli/validador-cpf-cnpj/v/stable)](https://packagist.org/packages/bissolli/validador-cpf-cnpj)
-[![Total Downloads](https://poser.pugx.org/bissolli/validador-cpf-cnpj/downloads)](https://packagist.org/packages/bissolli/validador-cpf-cnpj)
-[![License](https://poser.pugx.org/bissolli/validador-cpf-cnpj/license)](https://packagist.org/packages/bissolli/validador-cpf-cnpj)
+[![Build Status](https://travis-ci.org/linvix-sistemas/cpf-cnpj-validator-php.svg?branch=master)](https://travis-ci.org/linvix-sistemas/cpf-cnpj-validator-php)
+[![Latest Stable Version](https://poser.pugx.org/linvix-sistemas/cpf-cnpj-validator-php/v/stable)](https://packagist.org/packages/linvix-sistemas/cpf-cnpj-validator-php)
+[![Total Downloads](https://poser.pugx.org/linvix-sistemas/cpf-cnpj-validator-php/downloads)](https://packagist.org/packages/linvix-sistemas/cpf-cnpj-validator-php)
+[![License](https://poser.pugx.org/linvix-sistemas/cpf-cnpj-validator-php/license)](https://packagist.org/packages/linvix-sistemas/cpf-cnpj-validator-php)
 
 Classe em PHP para validação de CPF e CNPJ.
 
@@ -11,7 +11,7 @@ Classe em PHP para validação de CPF e CNPJ.
 ## Instalação
 Via [Composer](http://getcomposer.org)
 ```bash
-composer require bissolli/validador-cpf-cnpj
+composer require linvix-sistemas/cpf-cnpj-validator-php
 ```
 
 
@@ -20,7 +20,7 @@ composer require bissolli/validador-cpf-cnpj
 Exemplo de uso para validação e formatação de CPF:
 ```php
 // Não importa se já vem formatado ou não
-$document = new \Bissolli\ValidadorCpfCnpj\CPF('123.456.789.00');
+$document = new \LinvixSistemas\ValidadorCpfCnpj\CPF('123.456.789.00');
 
 // Verifica se é um número válido de CPF
 // Retorna true/false
@@ -39,7 +39,7 @@ $document->getValue();
 Exemplo de uso para validação e formatação de CNPJ:
 ```php
 // Não importa se já vem formatado ou não
-$document = new \Bissolli\ValidadorCpfCnpj\CNPJ('12.345.678/0001-90');
+$document = new \LinvixSistemas\ValidadorCpfCnpj\CNPJ('12.345.678/0001-90');
 
 // Verifica se é um número válido de CNPJ
 // Retorna true/false
@@ -58,7 +58,7 @@ $document->getValue();
 Exemplo de uso para validação e formatação de CNPJ ou CPF, já reconhecendo o tipo de documento baseado na quantidade de números:
 ```php
 // Não importa se é CPF ou CNPJ e se já vem formatado
-$document = new \Bissolli\ValidadorCpfCnpj\Documento('...');
+$document = new \LinvixSistemas\ValidadorCpfCnpj\Documento('...');
 
 // Retorna se é CPF ou CNPJ 
 // Retorna se for um número inválido retorna false

@@ -1,9 +1,16 @@
 <?php
 
-namespace Bissolli\ValidadorCpfCnpj;
+namespace LinvixSistemas\ValidadorCpfCnpj;
 
 abstract class DocumentoAbstract
 {
+    /**
+     * Default block list numbers
+     *
+     * @var array
+     */
+    protected const BLOCKLIST = [];
+
     /**
      * Value to be validated
      *
@@ -18,9 +25,10 @@ abstract class DocumentoAbstract
      */
     public function __construct($value = null)
     {
-        if ($value) $this->setValue($value);
+        if ($value) {
+            $this->setValue($value);
+        }
     }
-
 
     abstract public function isValid();
     abstract public function format();

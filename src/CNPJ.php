@@ -1,15 +1,15 @@
 <?php
 
-namespace Bissolli\ValidadorCpfCnpj;
+namespace LinvixSistemas\ValidadorCpfCnpj;
 
 class CNPJ extends DocumentoAbstract
 {
     /**
-     * Invalid numbers
+     * Default block list numbers
      *
-     * @var string
+     * @var array
      */
-    protected $blacklist = [
+    protected const BLOCKLIST = [
         '00000000000000',
         '11111111111111',
         '22222222222222',
@@ -19,7 +19,7 @@ class CNPJ extends DocumentoAbstract
         '66666666666666',
         '77777777777777',
         '88888888888888',
-        '99999999999999'
+        '99999999999999',
     ];
 
     /**
@@ -30,23 +30,22 @@ class CNPJ extends DocumentoAbstract
     public function isValid()
     {
         // Check the size
-        if (strlen($this->value) != 14) {
+        if (strlen($this->value) !== 14) {
             return false;
         }
 
         // Check if it is blacklisted
-        if (in_array($this->value, $this->blacklist)) {
+        if (in_array($this->value, self::BLOCKLIST, true)) {
             return false;
         }
 
         // Validate first check digit
         for ($i = 0, $j = 5, $sum = 0; $i < 12; $i++) {
             $sum += $this->value[$i] * $j;
-            $j = ($j == 2) ? 9 : $j - 1;
+            $j = ($j === 2) ? 9 : $j - 1;
         }
         $result = $sum % 11;
 
-        
         if ($this->value[12] != ($result < 2 ? 0 : 11 - $result)) {
             return false;
         }
@@ -54,10 +53,9 @@ class CNPJ extends DocumentoAbstract
         // Validate second check digit
         for ($i = 0, $j = 6, $sum = 0; $i < 13; $i++) {
             $sum += $this->value[$i] * $j;
-            $j = ($j == 2) ? 9 : $j - 1;
+            $j = ($j === 2) ? 9 : $j - 1;
         }
         $result = $sum % 11;
-        
 
         return $this->value[13] == ($result < 2 ? 0 : 11 - $result);
     }
@@ -65,7 +63,7 @@ class CNPJ extends DocumentoAbstract
     /**
      * Format CNPJ
      *
-     * @return string
+     * @return string|bool
      */
     public function format()
     {
@@ -74,11 +72,11 @@ class CNPJ extends DocumentoAbstract
         }
 
         // Format ##.###.###/####-##
-        $result  = substr($this->value, 0, 2) . '.';
+        $result = substr($this->value, 0, 2) . '.';
         $result .= substr($this->value, 2, 3) . '.';
         $result .= substr($this->value, 5, 3) . '/';
         $result .= substr($this->value, 8, 4) . '-';
-        $result .= substr($this->value, 12, 2) . '';
+        $result .= substr($this->value, 12, 2);
 
         return $result;
     }

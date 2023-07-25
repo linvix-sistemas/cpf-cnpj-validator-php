@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
-namespace Bissolli\ValidadorCpfCnpj\Test;
+namespace LinvixSistemas\ValidadorCpfCnpj\Test;
 
+use LinvixSistemas\ValidadorCpfCnpj\Documento;
 use PHPUnit\Framework\TestCase;
-use Bissolli\ValidadorCpfCnpj\Documento;
 
 final class DocumentoTest extends TestCase
 {
@@ -29,7 +29,7 @@ final class DocumentoTest extends TestCase
     public function test_should_throw_error_when_a_not_valid_number_is_provided(): void
     {
         $document = new Documento('1720');
-        
+
         $this->assertEquals($document->isValid(), false);
     }
 

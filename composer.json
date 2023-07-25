@@ -1,5 +1,5 @@
 {
-    "name": "bissolli/validador-cpf-cnpj",
+    "name": "linvix-sistemas/validador-cpf-cnpj-php",
     "description": "Classe em PHP para validação de CPF e CNPJ.",
     "keywords": [
         "cnpj",
@@ -11,11 +11,15 @@
     ],
     "type": "library",
     "license": "MIT",
-    "homepage": "https://github.com/bissolli/validador-cpf-cnpj",
+    "homepage": "https://github.com/linvix-sistemas/cpf-cnpj-validator-php",
     "authors": [
         {
-            "name": "Gustavo Bissolli",
+            "name": "Gustavo LinvixSistemas",
             "email": "gustavo.bissolli@gmail.com"
+        },
+        {
+            "name": "Cristiano Júnior da Cruz",
+            "email": "cristiano@linvix.com.br"
         }
     ],
     "require": {
@@ -26,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Bissolli\\ValidadorCpfCnpj\\": "src/"
+            "LinvixSistemas\\ValidadorCpfCnpj\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Bissolli\\ValidadorCpfCnpj\\Test\\": "tests/"
+            "LinvixSistemas\\ValidadorCpfCnpj\\Test\\": "tests/"
         }
     },
     "config": {

@@ -1,15 +1,15 @@
 <?php
 
-namespace Bissolli\ValidadorCpfCnpj;
+namespace LinvixSistemas\ValidadorCpfCnpj;
 
 class CPF extends DocumentoAbstract
 {
     /**
-     * Invalid numbers
+     * Default block list numbers
      *
-     * @var string
+     * @var array
      */
-    protected $blacklist = [
+    protected const BLOCKLIST = [
         '00000000000',
         '11111111111',
         '22222222222',
@@ -19,7 +19,7 @@ class CPF extends DocumentoAbstract
         '66666666666',
         '77777777777',
         '88888888888',
-        '99999999999'
+        '99999999999',
     ];
 
     /**
@@ -30,12 +30,12 @@ class CPF extends DocumentoAbstract
     public function isValid()
     {
         // Check the size
-        if (strlen($this->value) != 11) {
+        if (strlen($this->value) !== 11) {
             return false;
         }
 
         // Check if it is blacklisted
-        if (in_array($this->value, $this->blacklist)) {
+        if (in_array($this->value, self::BLOCKLIST, true)) {
             return false;
         }
 
@@ -63,7 +63,7 @@ class CPF extends DocumentoAbstract
     /**
      * Format CPF
      *
-     * @return string
+     * @return string|bool
      */
     public function format()
     {
@@ -72,10 +72,10 @@ class CPF extends DocumentoAbstract
         }
 
         // Format ###.###.###-##
-        $result  = substr($this->value, 0, 3) . '.';
+        $result = substr($this->value, 0, 3) . '.';
         $result .= substr($this->value, 3, 3) . '.';
         $result .= substr($this->value, 6, 3) . '-';
-        $result .= substr($this->value, 9, 2) . '';
+        $result .= substr($this->value, 9, 2);
 
         return $result;
     }

@@ -1,13 +1,13 @@
 <?php
 
-namespace Bissolli\ValidadorCpfCnpj;
+namespace LinvixSistemas\ValidadorCpfCnpj;
 
 class Documento extends DocumentoAbstract
 {
     /**
      * Value to be validated
      *
-     * @var string
+     * @var DocumentoAbstract
      */
     public $obj;
 
