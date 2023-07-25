@@ -11,7 +11,7 @@ Classe em PHP para validação de CPF e CNPJ.
 ## Instalação
 Via [Composer](http://getcomposer.org)
 ```bash
-composer require linvix-sistemas/cpf-cnpj-validator-php
+composer require linvix-sistemas/cpf-cnpj-validator-php:dev-main
 ```
 
 
