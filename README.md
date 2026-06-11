@@ -30,16 +30,18 @@ $document->isValid();
 // ou false caso não seja um número válido
 $document->format();
 
-// Retorna o número de sem formatação alguma
-// ou false caso não seja um número válido
+// Retorna o número sem formatação alguma
 $document->getValue();
 ```
 
 
 Exemplo de uso para validação e formatação de CNPJ:
 ```php
-// Não importa se já vem formatado ou não
+// Aceita tanto o formato numérico clássico quanto o novo formato alfanumérico
+// da Receita Federal (letras A-Z nos 12 primeiros caracteres, dígitos verificadores
+// sempre numéricos). Máscara opcional: ##.###.###/####-##
 $document = new \LinvixSistemas\ValidadorCpfCnpj\CNPJ('12.345.678/0001-90');
+$document = new \LinvixSistemas\ValidadorCpfCnpj\CNPJ('AB.3DE.6GH/0001-94'); // alfanumérico
 
 // Verifica se é um número válido de CNPJ
 // Retorna true/false
@@ -49,31 +51,48 @@ $document->isValid();
 // ou false caso não seja um número válido
 $document->format();
 
-// Retorna o número de sem formatação alguma
-// ou false caso não seja um número válido
+// Retorna o número sem formatação alguma
 $document->getValue();
 ```
 
+### Formato alfanumérico de CNPJ (novo padrão Receita Federal)
 
-Exemplo de uso para validação e formatação de CNPJ ou CPF, já reconhecendo o tipo de documento baseado na quantidade de números:
+A partir do novo padrão, os 12 primeiros caracteres do CNPJ podem conter letras
+maiúsculas (A–Z) e dígitos (0–9). Os 2 últimos caracteres (dígitos verificadores)
+continuam sendo exclusivamente numéricos. A máscara permanece a mesma:
+`##.###.###/####-##`.
+
+| Segmento       | Posições | Conteúdo          |
+|----------------|----------|-------------------|
+| CNPJ raiz      | 1–8      | A–Z e 0–9         |
+| Filial         | 9–12     | A–Z e 0–9         |
+| Dígito verif.  | 13–14    | 0–9               |
+
 ```php
-// Não importa se é CPF ou CNPJ e se já vem formatado
+// Exemplos de CNPJs alfanuméricos
+$document = new \LinvixSistemas\ValidadorCpfCnpj\CNPJ('AB3DE6GH000194');
+$document->isValid(); // true
+$document->format();  // "AB.3DE.6GH/0001-94"
+```
+
+
+Exemplo de uso para validação e formatação de CNPJ ou CPF, já reconhecendo o tipo de documento baseado na quantidade de caracteres:
+```php
+// Não importa se é CPF ou CNPJ e se já vem formatado (aceita alfanumérico para CNPJ)
 $document = new \LinvixSistemas\ValidadorCpfCnpj\Documento('...');
 
-// Retorna se é CPF ou CNPJ 
-// Retorna se for um número inválido retorna false
+// Retorna "CPF" ou "CNPJ"
 $document->getType();
 
 // Verifica se é um número válido de CNPJ ou CPF
 // Retorna true/false
 $document->isValid();
 
-// Retorna o número de formatado de acordo com tipo de documento informado
+// Retorna o número formatado de acordo com o tipo de documento informado
 // ou false caso não seja um número válido
 $document->format();
 
-// Retorna o número de sem formatação alguma
-// ou false caso não seja um número válido
+// Retorna o número sem formatação alguma
 $document->getValue();
 ```
 

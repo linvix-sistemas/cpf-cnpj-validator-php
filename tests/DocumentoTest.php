@@ -56,4 +56,45 @@ final class DocumentoTest extends TestCase
 
         $this->assertEquals($document->getValue(), "12345678901");
     }
+
+    /** @test */
+    public function test_should_validate_alphanumeric_cnpj(): void
+    {
+        // AB3DE6GH0001 base → DV 94 (calculated via new Receita Federal algorithm)
+        $document = new Documento("AB3DE6GH000194");
+
+        $this->assertTrue($document->isValid());
+    }
+
+    /** @test */
+    public function test_should_reject_alphanumeric_cnpj_with_wrong_dv(): void
+    {
+        $document = new Documento("AB3DE6GH000100");
+
+        $this->assertFalse($document->isValid());
+    }
+
+    /** @test */
+    public function test_should_format_alphanumeric_cnpj(): void
+    {
+        $document = new Documento("AB3DE6GH000194");
+
+        $this->assertEquals($document->format(), "AB.3DE.6GH/0001-94");
+    }
+
+    /** @test */
+    public function test_should_accept_masked_alphanumeric_cnpj(): void
+    {
+        $document = new Documento("AB.3DE.6GH/0001-94");
+
+        $this->assertTrue($document->isValid());
+    }
+
+    /** @test */
+    public function test_should_identify_alphanumeric_cnpj_as_cnpj(): void
+    {
+        $document = new Documento("AB3DE6GH000194");
+
+        $this->assertEquals($document->getType(), "CNPJ");
+    }
 }

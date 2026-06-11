@@ -58,7 +58,7 @@ abstract class DocumentoAbstract
      *
      * @return self
      */
-    public function setValue($value)
+    public function setValue(string $value)
     {
         $this->value = (string) preg_replace('/[^0-9]/', '', $value);
         return $this;
