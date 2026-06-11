@@ -50,18 +50,22 @@ class Documento extends DocumentoAbstract
     }
 
     /**
-     * Set the clean value
+     * Set the clean value.
+     * Strips only mask characters (. / -) before deciding CPF (11 chars) vs
+     * CNPJ (14 chars, may contain letters in the new alphanumeric format).
      *
      * @return self
      */
-    public function setValue($value)
+    public function setValue(string $value)
     {
-        $value = (string) preg_replace('/[^0-9]/', '', $value);
+        // Remove mask chars only, keep letters so alphanumeric CNPJ length is preserved
+        $cleaned = strtoupper((string) preg_replace('/[.\/-]/', '', $value));
 
-        if (strlen($value) === 11) {
-            $this->obj = new CPF($value);
+        if (strlen($cleaned) === 11) {
+            // CPF is always numeric; strip any remaining non-digit chars
+            $this->obj = new CPF(preg_replace('/[^0-9]/', '', $value));
         } else {
-            $this->obj = new CNPJ($value);
+            $this->obj = new CNPJ($cleaned);
         }
 
         return $this;

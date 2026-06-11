@@ -5,63 +5,66 @@ namespace LinvixSistemas\ValidadorCpfCnpj;
 class CNPJ extends DocumentoAbstract
 {
     /**
-     * Default block list numbers
+     * Default block list
      *
      * @var array
      */
     protected const BLOCKLIST = [
         '00000000000000',
-        '11111111111111',
-        '22222222222222',
-        '33333333333333',
-        '44444444444444',
-        '55555555555555',
-        '66666666666666',
-        '77777777777777',
-        '88888888888888',
-        '99999999999999',
     ];
 
     /**
-     * Check if it is a valid CNPJ number
+     * Weights for DV calculation (13 positions, used with offset 0 or 1)
+     */
+    private const DV_WEIGHTS = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+    /**
+     * ASCII ordinal of '0', used to convert alphanumeric chars to numeric value
+     */
+    private const ASCII_ZERO = 48;
+
+    /**
+     * Set the clean value, stripping mask chars and normalising to uppercase.
+     * Supports the new alphanumeric CNPJ format (A-Z and 0-9 are kept).
      *
-     * @return bool|string
+     * @return self
+     */
+    public function setValue(string $value)
+    {
+        $this->value = strtoupper((string) preg_replace('/[^A-Z0-9]/i', '', $value));
+        return $this;
+    }
+
+    /**
+     * Check if it is a valid CNPJ number.
+     * Supports both the classic all-numeric format and the new alphanumeric
+     * format (Receita Federal): 12 alphanumeric base chars + 2 numeric DV digits.
+     *
+     * @return bool
      */
     public function isValid()
     {
-        // Check the size
         if (strlen($this->value) !== 14) {
             return false;
         }
 
-        // Check if it is blacklisted
+        // 12 alphanumeric chars (A-Z, 0-9) followed by exactly 2 digit DV
+        if (!preg_match('/^[A-Z0-9]{12}[0-9]{2}$/', $this->value)) {
+            return false;
+        }
+
         if (in_array($this->value, self::BLOCKLIST, true)) {
             return false;
         }
 
-        // Validate first check digit
-        for ($i = 0, $j = 5, $sum = 0; $i < 12; $i++) {
-            $sum += $this->value[$i] * $j;
-            $j = ($j === 2) ? 9 : $j - 1;
-        }
-        $result = $sum % 11;
+        $calculated = $this->calculateDV(substr($this->value, 0, 12));
+        $informed    = substr($this->value, 12, 2);
 
-        if ($this->value[12] != ($result < 2 ? 0 : 11 - $result)) {
-            return false;
-        }
-
-        // Validate second check digit
-        for ($i = 0, $j = 6, $sum = 0; $i < 13; $i++) {
-            $sum += $this->value[$i] * $j;
-            $j = ($j === 2) ? 9 : $j - 1;
-        }
-        $result = $sum % 11;
-
-        return $this->value[13] == ($result < 2 ? 0 : 11 - $result);
+        return $calculated === $informed;
     }
 
     /**
-     * Format CNPJ
+     * Format CNPJ as ##.###.###/####-##
      *
      * @return string|bool
      */
@@ -71,13 +74,38 @@ class CNPJ extends DocumentoAbstract
             return false;
         }
 
-        // Format ##.###.###/####-##
-        $result = substr($this->value, 0, 2) . '.';
-        $result .= substr($this->value, 2, 3) . '.';
-        $result .= substr($this->value, 5, 3) . '/';
-        $result .= substr($this->value, 8, 4) . '-';
-        $result .= substr($this->value, 12, 2);
+        return substr($this->value, 0, 2) . '.'
+            . substr($this->value, 2, 3) . '.'
+            . substr($this->value, 5, 3) . '/'
+            . substr($this->value, 8, 4) . '-'
+            . substr($this->value, 12, 2);
+    }
 
-        return $result;
+    /**
+     * Calculate the two check digits for a 12-character CNPJ base.
+     *
+     * Each character is converted to its numeric value via
+     * ord($char) - ord('0'), which maps '0'→0 … '9'→9, 'A'→17, 'B'→18 …
+     * This is identical to the legacy behaviour for pure-digit CNPJs.
+     *
+     * @param string $base 12-character base string (no DV)
+     * @return string Two-digit DV string, e.g. "01"
+     */
+    private function calculateDV(string $base): string
+    {
+        $sumDV1 = 0;
+        $sumDV2 = 0;
+
+        for ($i = 0; $i < 12; $i++) {
+            $val     = ord($base[$i]) - self::ASCII_ZERO;
+            $sumDV1 += $val * self::DV_WEIGHTS[$i + 1];
+            $sumDV2 += $val * self::DV_WEIGHTS[$i];
+        }
+
+        $dv1     = $sumDV1 % 11 < 2 ? 0 : 11 - ($sumDV1 % 11);
+        $sumDV2 += $dv1 * self::DV_WEIGHTS[12];
+        $dv2     = $sumDV2 % 11 < 2 ? 0 : 11 - ($sumDV2 % 11);
+
+        return "{$dv1}{$dv2}";
     }
 }
